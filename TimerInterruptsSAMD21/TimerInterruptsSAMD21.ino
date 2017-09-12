@@ -7,8 +7,8 @@ uint32_t sampleRate = 1; //sample rate of the sine wave in Hertz, how many times
 #define LED_PIN 13 //just for an example
 bool state = 0; //just for an example
 
-const int NMAX = 100;
-const int JMAX = 10;
+const int NMAX = 10000;
+const int JMAX = 100;
 const unsigned long period = 100;
 const uint32_t freq = 10;
 
@@ -22,7 +22,9 @@ void setup() {
 }
 
 void loop() {
-  static boolean l = false;
+  //static boolean l = false;
+  
+  
   double f1 = 2000.0;
   double Ts = 1/44100.0;
   double sum = 0;
@@ -38,18 +40,23 @@ void loop() {
     }
     sum += sums[j];
   }
-  unsigned int current_time = millis();
+/*  unsigned int current_time = millis();
   
   if (current_time - start_time >= period) {
-    digitalWrite(LED_PIN, l = !l);
+   // digitalWrite(LED_PIN, l = !l);
     start_time = millis();
-  }
+  }*/
 }
 
 //this function gets called by the interrupt at <sampleRate>Hertz
 void TC5_Handler (void) {
-  //YOUR CODE HERE 
- 
+
+  //YOUR CODE HERE
+   
+  static boolean l = false;
+   
+  digitalWrite(LED_PIN, l = !l);
+  
   // END OF YOUR CODE
   TC5->COUNT16.INTFLAG.bit.MC0 = 1; //don't change this, it's part of the timer code
 }
